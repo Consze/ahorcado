@@ -452,7 +452,7 @@ function ordenarPalabrasAlfabeticamente($coleccionPalabras)
 
 /************** PROGRAMA PRINCIAL *********/
 define("CANT_INTENTOS", 6);
-$coleccionJuegos = [];
+$coleccionJuegos = cargarJuegos();
 $coleccionPalabras = cargarPalabras();
 do{
     $opcion = seleccionarOpcion();
@@ -498,51 +498,30 @@ do{
     case 4: echo "\n";
             echo "\n";
             echo("--Mostrar la información completa de un número de juego--\n");
-            if(count($coleccionJuegos) > 0)
-            {
                 echo(">Hay un total de ".(count($coleccionJuegos))." partidas\n");
                 echo(">Ingrese el numero de partida que quiere consultar. Para referirse a la primer posicion utilice el 0\n");
                 $indiceJuego = trim(fgets(STDIN));
                 mostrarJuego($coleccionJuegos,$coleccionPalabras,$indiceJuego);
-            }
-            else
-            {
-                echo(">No hay partidas jugadas\n");
-            }
         break;
     case 5: echo "\n";
             echo "\n";
             echo("----Mostrar la información completa del juego con más puntaje----\n");
-            if(count($coleccionJuegos) > 0)
-            {
                 $indiceJuego = buscarJuegoMayorPuntaje($coleccionJuegos);
                 mostrarJuego($coleccionJuegos,$coleccionPalabras,$indiceJuego);
-            }
-            else
-            {
-                echo(">No hay partidas jugadas\n");
-            }
         break;
     case 6: echo "\n";
             echo "\n";
             echo("----Mostrar la información completa del juego con puntaje mayor al indicado----\n");
-            if(count($coleccionJuegos) > 0)
+            echo(">Ingrese el puntaje\n");
+            $umbralPuntaje = trim(fgets(STDIN));
+            $indiceJuego = buscarJuegoMayorPuntajeObjetivo($coleccionJuegos,$umbralPuntaje);
+            if($indiceJuego == -1)
             {
-                echo(">Ingrese el puntaje\n");
-                $umbralPuntaje = trim(fgets(STDIN));
-                $indiceJuego = buscarJuegoMayorPuntajeObjetivo($coleccionJuegos,$umbralPuntaje);
-                if($indiceJuego == -1)
-                {
-                    echo(">No hay ninguna partida que supere el puntaje ingresado.");
-                }
-                else
-                {
-                    mostrarJuego($coleccionJuegos,$coleccionPalabras,$indiceJuego);
-                }
+                echo(">No hay ninguna partida que supere el puntaje ingresado.");
             }
             else
             {
-                echo(">No hay partidas jugadas\n");
+                mostrarJuego($coleccionJuegos,$coleccionPalabras,$indiceJuego);
             }
          break;
     case 7: echo "\n";
