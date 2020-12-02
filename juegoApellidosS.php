@@ -305,13 +305,12 @@ function stringLetrasDescubiertas($coleccionLetras)
 * @param int $cantIntentos
 * @return int puntaje obtenido
 */
-function jugar($coleccionPalabras, $indicePalabra)
+function jugar($coleccionPalabras, $indicePalabra,$cantIntentos)
 {
     $pal = $coleccionPalabras[$indicePalabra]["palabra"];
     $coleccionLetras = dividirPalabraEnLetras($pal);
     $puntaje = 0;
     $contador = 0;
-    $bonusIntentos = 6;
     echo "\n";
     echo("-------START-------\n");
     echo(stringLetrasDescubiertas($coleccionLetras)."\n");
@@ -328,15 +327,15 @@ function jugar($coleccionPalabras, $indicePalabra)
         else
         {
             $contador++;
-            $bonusIntentos = $bonusIntentos - 1;
+            $cantIntentos = $cantIntentos - 1;
             echo("----La letra no existe!----\n");
             echo(stringLetrasDescubiertas($coleccionLetras)."\n");
-            echo("----Intentos restantes ".(CANT_INTENTOS - $contador)."----\n");
+            echo("----Intentos restantes ".($cantIntentos)."----\n");
         }
     }
     if(palabraDescubierta($coleccionLetras))
     {
-        $puntaje = $coleccionPalabras[$indicePalabra]["puntosPalabra"] + $bonusIntentos;
+        $puntaje = $coleccionPalabras[$indicePalabra]["puntosPalabra"] + $cantIntentos;
         echo ("\n¡¡¡¡¡¡GANASTE ".$puntaje." puntos!!!!!!\n");
     }
     else
@@ -462,14 +461,14 @@ do{
             echo "\n";
             echo("----Jugar con una palabra aleatoria----\n");
             $indicePalabra = indiceAleatorioEntre(0,(count($coleccionPalabras)-1));
-            $puntaje = jugar($coleccionPalabras,$indicePalabra);
+            $puntaje = jugar($coleccionPalabras,$indicePalabra,CANT_INTENTOS);
             $coleccionJuegos = agregarJuego($coleccionJuegos,$puntaje,$indicePalabra);
         break;
     case 2: echo "\n";
             echo "\n";
             echo("----Jugar con una palabra elegida----\n");
             $indicePalabra = solicitarIndiceEntre(0,(count($coleccionPalabras)-1));
-            $puntaje = jugar($coleccionPalabras,$indicePalabra);
+            $puntaje = jugar($coleccionPalabras,$indicePalabra,CANT_INTENTOS);
             $coleccionJuegos = agregarJuego($coleccionJuegos,$puntaje,$indicePalabra);
         break;
     case 3: echo "\n";
