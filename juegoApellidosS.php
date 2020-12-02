@@ -250,7 +250,7 @@ function palabraDescubierta($coleccionLetras)
     $cantidadLetrasDescubiertas = 0;
     for($contador = 0; $contador < count($coleccionLetras);$contador++)
     {
-        if($coleccionLetras[$contador]["descubierta"] == true)
+        if($coleccionLetras[$contador]["descubierta"])
         {
             $cantidadLetrasDescubiertas = $cantidadLetrasDescubiertas + 1;
         }
@@ -311,7 +311,7 @@ function stringLetrasDescubiertas($coleccionLetras)
     $pal = "";
     for($contador = 0; $contador < count($coleccionLetras); $contador++)
     {
-        if($coleccionLetras[$contador]["descubierta"] == false)
+        if(!$coleccionLetras[$contador]["descubierta"])
         {   
             $pal = $pal."*";
         }
@@ -342,7 +342,7 @@ function jugar($coleccionPalabras, $indicePalabra,$cantIntentos)
     echo("-------START-------\n");
     echo(stringLetrasDescubiertas($coleccionLetras)."\n");
     echo($coleccionPalabras[$indicePalabra]["pista"]."\n");
-    while($contador < CANT_INTENTOS && palabraDescubierta($coleccionLetras) == false)
+    while($contador < CANT_INTENTOS && !palabraDescubierta($coleccionLetras))
     {
         $letra = solicitarLetra();
         if(existeLetra($letra,$coleccionLetras))
@@ -505,7 +505,7 @@ do{
             echo("----Agregar una palabra al listado----\n");
             echo(">Ingrese la palabra que desea agregar al listado\n");
             $palabraListado = ingresarDatos("caracteres");
-            while(existePalabra($coleccionPalabras,$palabraListado) == true || strlen($palabraListado) < 2)
+            while(existePalabra($coleccionPalabras,$palabraListado) || strlen($palabraListado) < 2)
             {
                 echo("--La palabra ya existe en el registro del juego o tiene una cantidad insuficiente de caracteres.--\n");
                 echo(">Ingrese una palabra distinta.\n");
@@ -527,7 +527,7 @@ do{
             echo("--Mostrar la información completa de un número de juego--\n");
                 echo(">Hay un total de ".(count($coleccionJuegos))." partidas\n");
                 echo(">Ingrese el numero de partida que quiere consultar. Para referirse a la primer posicion utilice el 0\n");
-                $indiceJuego = ingresarDatos("numeros");
+                $indiceJuego = solicitarIndiceEntre(0,count($coleccionJuegos)-1);
                 mostrarJuego($coleccionJuegos,$coleccionPalabras,$indiceJuego);
         break;
     case 5: echo "\n";
