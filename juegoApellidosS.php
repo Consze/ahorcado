@@ -208,12 +208,38 @@ function solicitarIndiceEntre($min,$max)
 { 
     do{
         echo (">Seleccione un valor entre ".$min. " y ".$max."\n");
-        $i = trim(fgets(STDIN));
+        $i = ingresarDatos("numeros");
     }while(!($i>=$min && $i<=$max));
     return $i;
 }
 
-
+/**Proteje la salud mental del programador evitando cualquier posible ingreso de 
+ * datos erroneos por parte del usuario. Convierte las cadenas de texto en minuscula.
+ * @param string $tipoDeDatos
+ * @return mixed
+ */
+function ingresarDatos($tipoDeDatos)
+{
+    if($tipoDeDatos == "numeros")
+    {
+        $input = trim(fgets(STDIN));
+        while(!is_numeric($input))
+        {
+            echo(">Caracter invalido. Ingrese un digito numerico por favor\n");
+            $input = trim(fgets(STDIN));
+        }
+    }
+    else if($tipoDeDatos == "caracteres")
+    {
+        $input = strtolower(trim(fgets(STDIN)));
+        while(is_numeric($input))
+        {
+            echo(">Digito invalido. Ingrese caracteres por favor\n");
+            $input = trim(fgets(STDIN));
+        }
+    }
+    return $input;
+}
 
 /**Determinar si la palabra fue descubierta, es decir, todas las letras fueron descubiertas
 * @param array $coleccionLetras
@@ -478,7 +504,7 @@ do{
             echo "\n";
             echo("----Agregar una palabra al listado----\n");
             echo(">Ingrese la palabra que desea agregar al listado\n");
-            $palabraListado = strtolower(trim(fgets(STDIN)));
+            $palabraListado = ingresarDatos("caracteres");
             while(existePalabra($coleccionPalabras,$palabraListado) == true || strlen($palabraListado) < 2)
             {
                 echo("--La palabra ya existe en el registro del juego o tiene una cantidad insuficiente de caracteres.--\n");
@@ -489,7 +515,7 @@ do{
             echo(">Defina una pista para la nueva palabra. \n");
             $pistaListado = trim(fgets(STDIN));
             echo(">Ingrese el puntaje deseado para la nueva palabra.\n");
-            $puntajeListado = trim(fgets(STDIN));
+            $puntajeListado = ingresarDatos("numeros");
             //$puntajeListado = calcularPuntosPalabra($palabraListado,$pistaListado);
             $coleccionPalabras[count($coleccionPalabras)] = array("palabra"=>$palabraListado,"pista"=>$pistaListado,"puntosPalabra"=>$puntajeListado);
             echo(">La palabra ha sido registrada con exito en la posicion ".(count($coleccionPalabras)-1)."\n");
@@ -501,7 +527,7 @@ do{
             echo("--Mostrar la información completa de un número de juego--\n");
                 echo(">Hay un total de ".(count($coleccionJuegos))." partidas\n");
                 echo(">Ingrese el numero de partida que quiere consultar. Para referirse a la primer posicion utilice el 0\n");
-                $indiceJuego = trim(fgets(STDIN));
+                $indiceJuego = ingresarDatos("numeros");
                 mostrarJuego($coleccionJuegos,$coleccionPalabras,$indiceJuego);
         break;
     case 5: echo "\n";
@@ -514,7 +540,7 @@ do{
             echo "\n";
             echo("----Mostrar la información completa del juego con puntaje mayor al indicado----\n");
             echo(">Ingrese el puntaje\n");
-            $umbralPuntaje = trim(fgets(STDIN));
+            $umbralPuntaje = ingresarDatos("numeros");
             $indiceJuego = buscarJuegoMayorPuntajeObjetivo($coleccionJuegos,$umbralPuntaje);
             if($indiceJuego == -1)
             {
