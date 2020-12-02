@@ -385,6 +385,11 @@ function mostrarPalabra($coleccionPalabras,$indicePalabra)
 */
 function mostrarJuego($coleccionJuegos,$coleccionPalabras,$indiceJuego)
 {
+    while($indiceJuego < 0 || $indiceJuego > count($coleccionPalabras))
+    {
+        echo(">Indice de partida invalido. Ingrese un numero valido\n");
+        $indiceJuego = trim(fgets(STDIN));
+    }
     echo "\n";
     echo "<-<-< Juego ".($indiceJuego)." >->->\n";
     echo ">Puntos ganados: ".$coleccionJuegos[$indiceJuego]["puntos"]."\n";
@@ -421,11 +426,6 @@ function buscarJuegoMayorPuntajeObjetivo($coleccionJuegos,$umbralPuntaje)
 {
     $indiceJuego = -1;
     // Comentario prueba git
-    while($indiceJuego > count($coleccionJuegos) && $$indiceJuego < 0)
-    {
-        echo(">Ingrese un numero valido de partida");
-        $indiceJuego = trim(fgets(STDIN));
-    }
     for($contador = 0; $contador < count($coleccionJuegos); $contador++)
     {
         if($coleccionJuegos[$contador]["puntos"] > $umbralPuntaje)
