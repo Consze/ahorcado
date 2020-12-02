@@ -35,34 +35,6 @@ CAMILO SALINAS - FAI 3009
 }
 */
 
-/**Verifica si el usuario desea seguir jugando
- * @return boolean
- */
-function verificarContinuarJugando($opcion)
-{
-    $opcionValor = 0;
-    while($opcionValor != 8 && $opcionValor != 5)
-    {
-        echo("\n");
-        echo("Desea volver al menu ? <SI-NO>\n");
-        $continuarJugando = strtolower(trim(fgets(STDIN)));
-        if($continuarJugando == "no")
-        {
-            $opcionValor = 8;
-            
-        }
-        else if ($continuarJugando == "si")
-        {
-            $opcionValor = 5;
-        }
-        else
-        {
-            echo(">Ingrese una opcion valida\n");
-        }
-    }
-    return $opcionValor;
-}
-
 /**Genera un arreglo de palabras para jugar
 * @return array $coleccionPalabras
 */
@@ -134,11 +106,40 @@ function seleccionarOpcion()
     echo "--------------------------------------------------------------\n";
     echo "\n ( 8 ) Salir\n"; 
     echo "--------------------------------------------------------------\n";
-    $opcion = trim(fgets(STDIN));
-    while($opcion < 0 && $opcion >8)
+    $opcionValor = trim(fgets(STDIN));
+    while($opcionValor < 0 || $opcionValor >8 || !is_numeric($opcionValor))
     {
-        echo(">Opcion invalida! Ingrese nuevamente el digito\n");
+        echo(">Opcion invalida. Elija una opcion disponible\n");
+        $opcionValor = trim(fgets(STDIN));
     }
+    return $opcionValor;
+}
+
+/**Pregunta al usuario si desea volver al menu
+ * @param int $opcion
+ * @return int
+ */
+function finJuego($opcion)
+{
+    while($opcion != 8 && $opcion != 5)
+        {
+            echo("\n");
+            echo("Desea volver al menu ? <SI-NO>\n");
+            $continuarJugando = strtolower(trim(fgets(STDIN)));
+            if($continuarJugando == "no")
+            {
+                 $opcion = 8;
+                    
+            }
+            else if ($continuarJugando == "si")
+            {
+                $opcion = 5;
+            }
+            else
+            {
+                echo(">Ingrese una opcion valida\n");
+            }
+        }
     return $opcion;
 }
 
@@ -424,14 +425,16 @@ function buscarJuegoMayorPuntaje($coleccionJuegos)
 function buscarJuegoMayorPuntajeObjetivo($coleccionJuegos,$umbralPuntaje)
 {
     $indiceJuego = -1;
-    // Comentario prueba git
-    for($contador = 0; $contador < count($coleccionJuegos); $contador++)
+    $contador = 0;
+    while($contador < count($coleccionJuegos))
     {
         if($coleccionJuegos[$contador]["puntos"] > $umbralPuntaje)
         {
             $umbralPuntaje = $coleccionJuegos[$contador]["puntos"];
             $indiceJuego = $contador;
+            $contador = count($coleccionJuegos);
         }
+        $contador++;
     }
     return $indiceJuego;
 }
@@ -474,7 +477,6 @@ do{
     case 3: echo "\n";
             echo "\n";
             echo("----Agregar una palabra al listado----\n");
-            print_r($coleccionPalabras);
             echo(">Ingrese la palabra que desea agregar al listado\n");
             $palabraListado = strtolower(trim(fgets(STDIN)));
             while(existePalabra($coleccionPalabras,$palabraListado) == true || strlen($palabraListado) < 2)
@@ -505,8 +507,8 @@ do{
     case 5: echo "\n";
             echo "\n";
             echo("----Mostrar la información completa del juego con más puntaje----\n");
-                $indiceJuego = buscarJuegoMayorPuntaje($coleccionJuegos);
-                mostrarJuego($coleccionJuegos,$coleccionPalabras,$indiceJuego);
+            $indiceJuego = buscarJuegoMayorPuntaje($coleccionJuegos);
+            mostrarJuego($coleccionJuegos,$coleccionPalabras,$indiceJuego);
         break;
     case 6: echo "\n";
             echo "\n";
@@ -530,5 +532,5 @@ do{
             print_r($coleccionPalabras);
         break;
     }
-    $opcion = verificarContinuarJugando($opcion);
+    $opcion = finJuego($opcion);
 }while($opcion < 8 && $opcion > 0 );
