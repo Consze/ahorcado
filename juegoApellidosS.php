@@ -420,6 +420,7 @@ function buscarJuegoMayorPuntaje($coleccionJuegos)
 function buscarJuegoMayorPuntajeObjetivo($coleccionJuegos,$umbralPuntaje)
 {
     $indiceJuego = -1;
+    // Comentario prueba
     for($contador = 0; $contador < count($coleccionJuegos); $contador++)
     {
         if($coleccionJuegos[$contador]["puntos"] > $umbralPuntaje)
